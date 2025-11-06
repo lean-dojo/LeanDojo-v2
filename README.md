@@ -19,6 +19,10 @@ export your Github access token,
 ``` sh
 export GITHUB_ACCESS_TOKEN=<GITHUB_ACCESS_TOKEN>
 ```
+to use the HuggingFace API, you need to export your HuggingFace token,
+``` sh
+export HF_TOKEN=<HF_TOKEN>
+```
 ## Example
 ``` python
 from lean_dojo_v2.agent.hf_agent import HFAgent
