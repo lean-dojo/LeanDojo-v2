@@ -51,5 +51,5 @@ jobs:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         run: |
             source .venv/bin/activate
-            pytest -v
+            pytest -vvv
 
