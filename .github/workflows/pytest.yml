@@ -38,7 +38,9 @@ jobs:
           uv pip install -e ".[dev]"
 
       - name: Set up elan
-        run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
       - name: Install Pantograph
         run: |
