@@ -29,6 +29,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Create virtual environment
+        run: |
+          uv venv
+
       - name: Install project with dev dependencies
         run: |
           uv pip install -e ".[dev]"
