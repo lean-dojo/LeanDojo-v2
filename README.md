@@ -1,6 +1,6 @@
 # LeanDojo-v2
 ## Requirements
-* Python = 3.11
+* Python >= 3.11
 * GPU
 ## Installation
 To install LeanDojo-v2, run
@@ -15,11 +15,11 @@ make sure you've installed CUDA-compiled torch,
 ``` sh
 uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 ```
-export your Github access token,
+export your GitHub access token,
 ``` sh
 export GITHUB_ACCESS_TOKEN=<GITHUB_ACCESS_TOKEN>
 ```
-to use the HuggingFace API, you need to export your HuggingFace token,
+To use the HuggingFace API, you need to export your HuggingFace token,
 ``` sh
 export HF_TOKEN=<HF_TOKEN>
 ```
