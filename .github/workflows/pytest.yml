@@ -37,22 +37,10 @@ jobs:
         run: |
           uv pip install -e ".[dev]"
 
-      - name: Set up elan
-        run: |
-          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
-
-      - name: Install Pantograph
-        run: |
-          uv pip install git+https://github.com/stanford-centaur/PyPantograph
-
-      - name: Install torch
-        run: |
-          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
       - name: Run pytest
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         run: |
-          uv run pytest -v
+            source .venv/bin/activate
+            pytest -v
 
