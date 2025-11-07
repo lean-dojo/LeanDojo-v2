@@ -22,7 +22,7 @@ def get_lean4_version_from_config(toolchain: str) -> str:
 
 def is_supported_version(v: str) -> bool:
     """
-    Check if ``v`` is at least `v4.3.0-rc2` and at most `v4.18.0-rc1`.
+    Check if ``v`` is at least `v4.3.0` and at most `v4.24.0`.
     Note: Lean versions are generally not backwards-compatible. Also, the Lean FRO
     keeps bumping the default versions of repos to the latest version, which is
     not necessarily the latest stable version. So, we need to be careful about
