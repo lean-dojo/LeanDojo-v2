@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.11"]
-    name: Test with pytest (Python ${{ matrix.python-version }})
+    name: run pytest (Python ${{ matrix.python-version }})
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -54,5 +54,5 @@ jobs:
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         run: |
-          uv run pytest lean_dojo_v2/tests -v
+          pytest -v
 
