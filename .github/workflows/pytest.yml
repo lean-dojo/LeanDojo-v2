@@ -54,5 +54,5 @@ jobs:
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         run: |
-          pytest -v
+          uv run pytest -v
 

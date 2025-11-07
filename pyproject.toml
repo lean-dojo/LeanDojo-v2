@@ -33,7 +33,6 @@ dependencies = [
     "loguru>=0.6.0",
     "networkx>=2.8.0",
     "ray>=2.0.0",
-    "vllm>=0.2.0",
     "requests>=2.28.0",
     "tqdm>=4.64.0",
     "openai>=0.27.0",

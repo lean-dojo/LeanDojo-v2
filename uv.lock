@@ -1448,7 +1448,7 @@ wheels = [
 
 [[package]]
 name = "lean-dojo-v2"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "datasets" },
@@ -1460,7 +1460,6 @@ dependencies = [
     { name = "networkx" },
     { name = "numpy" },
     { name = "openai" },
-    { name = "pantograph" },
     { name = "peft" },
     { name = "pexpect" },
     { name = "psutil" },
@@ -1504,7 +1503,6 @@ requires-dist = [
     { name = "networkx", specifier = ">=2.8.0" },
     { name = "numpy", specifier = ">=1.21.0" },
     { name = "openai", specifier = ">=0.27.0" },
-    { name = "pantograph", git = "https://github.com/stanford-centaur/PyPantograph" },
     { name = "peft", specifier = ">=0.17.0" },
     { name = "pexpect", specifier = ">=4.8.0" },
     { name = "psutil", specifier = ">=5.9.0" },
@@ -2439,11 +2437,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/81/aa/e58541a49b5e6310d89474333e994ee57fea97c8aaa8fc7f00b873059bbf/pandas-2.3.1-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:fe37e757f462d31a9cd7580236a82f353f5713a80e059a29753cf938c6775d96", size = 12704705, upload-time = "2025-07-07T19:19:36.856Z" },
     { url = "https://files.pythonhosted.org/packages/d5/f9/07086f5b0f2a19872554abeea7658200824f5835c58a106fa8f2ae96a46c/pandas-2.3.1-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:5db9637dbc24b631ff3707269ae4559bce4b7fd75c1c4d7e13f40edc42df4444", size = 13189044, upload-time = "2025-07-07T19:19:39.999Z" },
 ]
-
-[[package]]
-name = "pantograph"
-version = "0.3.7"
-source = { git = "https://github.com/stanford-centaur/PyPantograph#d2692f60761ed9ee3d5a0e1bf36436498a4efd52" }
 
 [[package]]
 name = "partial-json-parser"

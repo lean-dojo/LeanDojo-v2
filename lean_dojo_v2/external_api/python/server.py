@@ -4,29 +4,14 @@ from typing import Optional
 import torch
 from external_models import *
 from fastapi import FastAPI, HTTPException
-from loguru import logger
 from models import *
 from pydantic import BaseModel
 
 app = FastAPI()
 
 models = {
-    "kimina": VLLMTacticGenerator(
-        model="AI-MO/Kimina-Prover-Preview-Distill-7B",
-        tensor_parallel_size=1,
-        temperature=0.6,
-        max_tokens=1024,
-        top_p=0.9,
-        length_penalty=0,
-        n=4,
-        do_sample=True,
-        output_scores=True,
-        output_logits=False,
-        return_dict_in_generate=True,
-        device="auto",
-    ),
     "deepseek": HFTacticGenerator(
-        model="deepseek-ai/DeepSeek-Prover-V2-7B",
+        model="deepseek-ai/DeepSeek-Prover-V2-671B:novita",
         temperature=0.6,
         max_new_tokens=256,
         top_p=0.9,
