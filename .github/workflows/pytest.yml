@@ -1,0 +1,56 @@
+name: Pytest
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    name: Test with pytest (Python ${{ matrix.python-version }})
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install project with dev dependencies
+        run: |
+          uv pip install -e ".[dev]"
+
+      - name: Install Pantograph
+        run: |
+          uv pip install git+https://github.com/stanford-centaur/PyPantograph
+
+      - name: Install torch
+        run: |
+          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Set up GitHub access token
+        if: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        run: |
+          echo "GITHUB_ACCESS_TOKEN is set"
+
+      - name: Run pytest
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        run: |
+          uv run pytest lean_dojo_v2/tests -v
+
