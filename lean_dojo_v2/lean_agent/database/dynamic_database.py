@@ -482,7 +482,7 @@ class DynamicDatabase:
         if (
             total_theorems < 3 * BATCH_SIZE
         ):  # Should be enough theorems for train/val/test
-            logger.info(f"Not enough theorems found in {url}")
+            logger.info(f"Not enough theorems found in {repo.url}")
             return None
 
         config = repo.get_config("lean-toolchain")
