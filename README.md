@@ -30,7 +30,7 @@ LeanDojo-v2 extends the original LeanDojo stack with the LeanAgent lifelong lear
 2. Storing structured theorem information in a dynamic database.
 3. Training agent policies with supervised fine-tuning (SFT), GRPO-style RL, or retrieval objectives.
 4. Driving Pantograph-based provers to fill in sorrys or verify solutions.
-5. Surfacing models through LeanCopilot and HTTP APIs for IDE integrations.
+5. Using HuggingFace API for large model inference.
 
 The codebase is modular: you can reuse the tracing pipeline without the agents, swap in custom trainers, or stand up your own inference service via the external API layer.
 
@@ -43,8 +43,7 @@ The codebase is modular: you can reuse the tracing pipeline without the agents, 
 - **Multi-Modal Provers**: `HFProver`, `RetrievalProver`, and `ExternalProver` run on top of Pantograph’s Lean RPC server to search for tactics, generate whole proofs, or delegate to custom models.
 - **Lean Tracing Pipeline**: `lean_dojo_v2/lean_dojo` includes the Lean 4 instrumentation (`ExtractData.lean`) and Python utilities to trace commits, normalize ASTs, and cache proof states.
 - **Dynamic Repository Database**: `lean_agent.database` tracks repositories, theorems, curriculum difficulty, and sorry status, enabling lifelong training schedules.
-- **External API + LeanCopilot**: The `external_api` folder exposes HTTP endpoints (FastAPI + uvicorn) and Lean frontend snippets so you can query LLMs from Lean editors.
-- **Utilities for Reproducibility**: Shared helpers manage Git interactions, filesystem layout, environment validation, and experiment tracking.
+- **External API**: The `external_api` folder exposes HTTP endpoints (FastAPI + uvicorn) and Lean frontend snippets so you can query LLMs from Lean editors.
 
 ---
 
@@ -59,7 +58,7 @@ The codebase is modular: you can reuse the tracing pipeline without the agents, 
 | `lean_dojo_v2/lean_agent/` | Lifelong learning pipeline (configs, database, retrieval stack, generator). |
 | `lean_dojo_v2/external_api/` | LeanCopilot code (Lean + Python server) to query external models. |
 | `lean_dojo_v2/utils/` | Shared helpers for Git, filesystem operations, and constants. |
-| `lean_dojo_v2/tests/` | Pytest regression suite (`test_dojo.py`). |
+| `lean_dojo_v2/tests/` | Pytest regression suite. |
 
 For deeper documentation on the lifelong learning component, see `lean_dojo_v2/lean_agent/README.md`.
 
@@ -177,11 +176,6 @@ This example:
 ### Retrieval Trainer & LeanAgent
 - `RetrievalTrainer` trains the dense retriever that scores prior proofs.
 - `LeanAgent` wraps the trainer, maintains repository curricula, and couples it with `RetrievalProver`.
-- Run via:
-  ```sh
-  python -m lean_dojo_v2.lean_agent
-  ```
-  then customize `TrainingConfig`/`ProverConfig` to point to your checkpoints and Fisher matrices.
 
 Each agent inherits `BaseAgent`, so you can implement your own by overriding `_get_build_deps()` and `_setup_prover()` to register new trainer/prover pairs.
 
@@ -262,12 +256,12 @@ pytest
 
 Tests currently cover two areas:
 - `lean_dojo_v2/tests/test_dojo.py` spins up the full tracing + Lean agent flow on a tiny public repository. It needs valid GitHub and Hugging Face tokens, plus a working Lean toolchain/Pantograph installation.
-- `tests/test_leanprogress_examples.py` exercises the LeanProgress dataset helper and regression tokenizer logic. These are pure Python tests with no external dependencies.
+- `lean_dojo_v2/tests/test_leanprogress_examples.py` exercises the LeanProgress dataset helper and regression tokenizer logic. These are pure Python tests with no external dependencies.
 
 If you only want to run the examples test suite (no network calls), target it directly:
 
 ```sh
-pytest tests/test_leanprogress_examples.py
+pytest lean_dojo_v2/tests/test_leanprogress_examples.py
 ```
 
 The Lean tracing tests clone repositories and build Lean projects, so make sure `elan` is installed and the `raid/` directory has sufficient space.
