@@ -31,7 +31,6 @@ from lean_dojo_v2.utils.git import (
     search_github_repositories,
 )
 from lean_dojo_v2.utils.lean import get_lean4_version_from_config
-from lean_dojo_v2.utils.repository import save_sorted_repos
 
 from .models import Repository, Theorem
 
