@@ -231,11 +231,11 @@ The generated artifacts flow into the `DynamicDatabase`, which keeps repositorie
 
 - Generate a JSONL dataset with remaining-step targets (or replace it with your own LeanProgress export):
   ```sh
-  python examples/leanprogress/create_sample_dataset.py --output raid/data/sample_leanprogress_dataset.jsonl
+  python -m lean_dojo_v2.lean_progress.create_sample_dataset --output raid/data/sample_leanprogress_dataset.jsonl
   ```
 - Fine-tune a regression head that predicts `steps_remaining`:
   ```sh
-  python examples/leanprogress/train_steps_model.py \
+  python -m lean_dojo_v2.lean_progress.train_steps_model \
     --dataset raid/data/sample_leanprogress_dataset.jsonl \
     --output-dir raid/checkpoints/leanprogress_steps \
     --model-name bert-base-uncased

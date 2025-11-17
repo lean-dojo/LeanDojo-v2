@@ -1,7 +1,7 @@
 import json
 from types import SimpleNamespace
 
-from examples.leanprogress import create_sample_dataset, train_steps_model
+from lean_dojo_v2.lean_progress import create_sample_dataset, train_steps_model
 
 
 def test_create_sample_dataset_writes_expected_jsonl(tmp_path, monkeypatch):
