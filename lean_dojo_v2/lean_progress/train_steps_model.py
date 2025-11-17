@@ -73,7 +73,8 @@ def tokenize_batch(tokenizer, max_length):
             truncation=True,
             max_length=max_length,
         )
-        encoded["labels"] = batch["steps_remaining"]
+        # encoded["labels"] = batch["steps_remaining"]
+        encoded["labels"] = [float(x) for x in batch["steps_remaining"]]
         return encoded
 
     return _tokenize
@@ -122,7 +123,7 @@ def main() -> None:
         per_device_eval_batch_size=args.batch_size,
         num_train_epochs=args.epochs,
         weight_decay=0.01,
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
         metric_for_best_model="mse",
