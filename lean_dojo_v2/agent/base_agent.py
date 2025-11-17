@@ -5,7 +5,7 @@ from pathlib import Path
 from loguru import logger
 from pantograph import Server
 
-from lean_dojo_v2.lean_agent.database.dynamic_database import DynamicDatabase
+from lean_dojo_v2.database.dynamic_database import DynamicDatabase
 from lean_dojo_v2.lean_dojo.data_extraction.trace import get_traced_repo_path
 from lean_dojo_v2.utils.constants import DATA_DIR, RAID_DIR
 

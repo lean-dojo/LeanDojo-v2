@@ -5,13 +5,14 @@ LeanDojo-v2 is an end-to-end framework for training, evaluating, and deploying A
 ---
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Key Features](#key-features)
 3. [Repository Layout](#repository-layout)
 4. [Requirements](#requirements)
 5. [Installation](#installation)
 6. [Environment Setup](#environment-setup)
-7. [Quickstart](#quickstart)
+7. [Quick Start](#quickstart)
 8. [Working with Agents and Trainers](#working-with-agents-and-trainers)
 9. [Tracing and Dataset Generation](#tracing-and-dataset-generation)
 10. [External APIs and LeanCopilot](#external-apis-and-leancopilot)
@@ -41,8 +42,8 @@ The codebase is modular: you can reuse the tracing pipeline without the agents, 
 - **Unified Agent Abstractions**: `BaseAgent` orchestrates repository setup, training, and proving. Concrete implementations (`HFAgent`, `LeanAgent`, and `ExternalAgent`) tailor the workflow to Hugging Face models, retrieval-based provers, or REST-backed models.
 - **Powerful Trainers**: `SFTTrainer`, `GRPOTrainer`, and `RetrievalTrainer` cover LoRA-enabled supervised fine-tuning, group-relative policy optimization, and retriever-only curriculum learning.
 - **Multi-Modal Provers**: `HFProver`, `RetrievalProver`, and `ExternalProver` run on top of Pantograph’s Lean RPC server to search for tactics, generate whole proofs, or delegate to custom models.
-- **Lean Tracing Pipeline**: `lean_dojo_v2/lean_dojo` includes the Lean 4 instrumentation (`ExtractData.lean`) and Python utilities to trace commits, normalize ASTs, and cache proof states.
-- **Dynamic Repository Database**: `lean_agent.database` tracks repositories, theorems, curriculum difficulty, and sorry status, enabling lifelong training schedules.
+- **Lean Tracing Pipeline**: `lean_dojo` includes the Lean 4 instrumentation (`ExtractData.lean`) and Python utilities to trace commits, normalize ASTs, and cache proof states.
+- **Dynamic Repository Database**: `database` tracks repositories, theorems, curriculum difficulty, and sorry status, enabling lifelong training schedules.
 - **External API**: The `external_api` folder exposes HTTP endpoints (FastAPI + uvicorn) and Lean frontend snippets so you can query LLMs from Lean editors.
 
 ---
@@ -129,7 +130,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 
 ---
 
-## Quickstart
+## Quick Start
 
 ```python
 from lean_dojo_v2.agent.hf_agent import HFAgent
@@ -153,6 +154,7 @@ agent.prove()
 ```
 
 This example:
+
 1. Downloads and traces the target Lean repository + commit.
 2. Builds a supervised dataset from sorry theorems.
 3. Fine-tunes the specified Hugging Face model (optionally with LoRA).
@@ -163,17 +165,20 @@ This example:
 ## Working with Agents and Trainers
 
 ### Supervised Fine-Tuning (`SFTTrainer`)
+
 - Accepts any Hugging Face causal LM identifier.
 - Supports LoRA by passing a `peft.LoraConfig`.
 - Key arguments: `epochs_per_repo`, `batch_size`, `max_seq_len`, `lr`, `warmup_steps`, `gradient_checkpointing`.
 - Produces checkpoints under `output_dir` that the `HFProver` consumes.
 
 ### GRPO Trainer (`GRPOTrainer`)
+
 - Implements Group Relative Policy Optimization for reinforcement-style refinement.
 - Accepts `reference_model`, `reward_weights`, and `kl_beta` settings.
 - Useful for improving search policies on curated theorem batches.
 
 ### Retrieval Trainer & LeanAgent
+
 - `RetrievalTrainer` trains the dense retriever that scores prior proofs.
 - `LeanAgent` wraps the trainer, maintains repository curricula, and couples it with `RetrievalProver`.
 
@@ -194,12 +199,17 @@ The `lean_dojo_v2/lean_dojo/data_extraction` package powers repository tracing:
 Typical usage:
 
 ```python
-from lean_dojo_v2.lean_dojo.data_extraction.dataset import generate_benchmark
+from lean_dojo_v2.database.dynamic_database import DynamicDatabase
 
-generate_benchmark(
-    repos=[("https://github.com/durant42040/lean4-example", "005de00d03f1aaa32cb2923d5e3cbaf0b954a192")],
-    build_deps=True,
-    output_dir="raid/data",
+url = "https://github.com/durant42040/lean4-example"
+commit = "005de00d03f1aaa32cb2923d5e3cbaf0b954a192"
+
+database = DynamicDatabase()
+
+database.setup_github_repository(
+    url=url,
+    commit=commit,
+    build_deps=False,
 )
 ```
 
@@ -255,6 +265,7 @@ pytest
 ```
 
 Tests currently cover two areas:
+
 - `lean_dojo_v2/tests/test_dojo.py` spins up the full tracing + Lean agent flow on a tiny public repository. It needs valid GitHub and Hugging Face tokens, plus a working Lean toolchain/Pantograph installation.
 - `lean_dojo_v2/tests/test_leanprogress_examples.py` exercises the LeanProgress dataset helper and regression tokenizer logic. These are pure Python tests with no external dependencies.
 

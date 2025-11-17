@@ -11,7 +11,7 @@ from pantograph.expr import GoalState, Site, Tactic
 from pantograph.search import Agent, SearchResult, SearchState
 from pantograph.server import ServerError, TacticFailure
 
-from lean_dojo_v2.lean_agent.database.models.theorems import Theorem
+from lean_dojo_v2.database.models.theorems import Theorem
 
 
 class BaseProver(Agent, ABC):

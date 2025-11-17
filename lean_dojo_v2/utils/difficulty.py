@@ -5,8 +5,8 @@ Utility functions for calculating and categorizing theorem difficulties.
 import math
 from typing import Dict, List, Union
 
-from lean_dojo_v2.lean_agent.database.models import Theorem
-from lean_dojo_v2.lean_agent.database.models.repository import Repository
+from lean_dojo_v2.database.models import Theorem
+from lean_dojo_v2.database.models.repository import Repository
 
 
 def calculate_theorem_difficulty(theorem: Theorem) -> Union[float, None]:

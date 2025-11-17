@@ -13,7 +13,7 @@ from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig
 
-from lean_dojo_v2.lean_agent.database.dynamic_database import DynamicDatabase
+from lean_dojo_v2.database.dynamic_database import DynamicDatabase
 from lean_dojo_v2.lean_dojo.data_extraction.lean import LeanGitRepo
 from lean_dojo_v2.utils import remove_marks
 from lean_dojo_v2.utils.constants import DATA_DIR, RAID_DIR

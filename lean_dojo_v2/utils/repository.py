@@ -6,7 +6,7 @@ import json
 import os
 from typing import List, Tuple
 
-from lean_dojo_v2.lean_agent.database.models import Repository
+from lean_dojo_v2.database.models import Repository
 from lean_dojo_v2.utils.constants import DATA_DIR, RAID_DIR
 
 

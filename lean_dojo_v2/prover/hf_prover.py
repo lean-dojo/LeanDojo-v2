@@ -8,7 +8,7 @@ from pantograph.expr import GoalState, Tactic
 from peft import AutoPeftModelForCausalLM
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from lean_dojo_v2.lean_agent.database.models.theorems import Theorem
+from lean_dojo_v2.database.models.theorems import Theorem
 from lean_dojo_v2.prover.base_prover import BaseProver
 
 
