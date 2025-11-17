@@ -6,10 +6,9 @@ from typing import List, Optional
 import torch
 from external_models import *
 from fastapi import FastAPI, HTTPException
+from leanprogress import LeanProgressScorer
 from models import *
 from pydantic import BaseModel
-
-from leanprogress import LeanProgressScorer
 
 app = FastAPI()
 
@@ -33,7 +32,9 @@ def _build_progress_scorer() -> Optional[LeanProgressScorer]:
             template=template,
         )
     except Exception as exc:
-        raise RuntimeError(f"Failed to load LeanProgress model '{model_path}': {exc}") from exc
+        raise RuntimeError(
+            f"Failed to load LeanProgress model '{model_path}': {exc}"
+        ) from exc
 
 
 models = {

@@ -9,9 +9,9 @@ from loguru import logger
 from pytorch_lightning import seed_everything
 from tqdm import tqdm
 
-from lean_dojo_v2.lean_agent.config import TrainingConfig
 from lean_dojo_v2.database.dynamic_database import DynamicDatabase
 from lean_dojo_v2.database.models.repository import Repository
+from lean_dojo_v2.lean_agent.config import TrainingConfig
 from lean_dojo_v2.lean_agent.retrieval.datamodule import RetrievalDataModule
 from lean_dojo_v2.lean_agent.retrieval.model import PremiseRetriever
 from lean_dojo_v2.lean_dojo.data_extraction.lean import LeanGitRepo

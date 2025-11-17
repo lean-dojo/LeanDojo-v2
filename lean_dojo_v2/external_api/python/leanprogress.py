@@ -22,7 +22,9 @@ class PromptTemplate:
     )
 
     def render(self, goal: str, tactic: str, prefix: Optional[str]) -> str:
-        return self.template.format(goal=goal, tactic=tactic, prefix=prefix or "").strip()
+        return self.template.format(
+            goal=goal, tactic=tactic, prefix=prefix or ""
+        ).strip()
 
 
 class LeanProgressScorer:

@@ -22,7 +22,9 @@ def test_build_text_structure_contains_sections():
         "prefix": "intro n",
         "tactic": "simpa",
     }
-    text = train_steps_model.build_text(payload["goal"], payload["prefix"], payload["tactic"])
+    text = train_steps_model.build_text(
+        payload["goal"], payload["prefix"], payload["tactic"]
+    )
     assert "Goal:\n" in text
     assert "Prefix:\n" in text
     assert "Candidate tactic:\n" in text

@@ -19,7 +19,9 @@ from transformers import (
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train a LeanProgress regression model.")
+    parser = argparse.ArgumentParser(
+        description="Train a LeanProgress regression model."
+    )
     parser.add_argument(
         "--dataset",
         type=Path,
@@ -50,12 +52,7 @@ def parse_args() -> argparse.Namespace:
 def build_text(goal: str, prefix: str, tactic: str) -> str:
     prefix = prefix or ""
     return (
-        "Goal:\n"
-        + goal
-        + "\n\nPrefix:\n"
-        + prefix
-        + "\n\nCandidate tactic:\n"
-        + tactic
+        "Goal:\n" + goal + "\n\nPrefix:\n" + prefix + "\n\nCandidate tactic:\n" + tactic
     )
 
 
@@ -64,7 +61,9 @@ def tokenize_batch(tokenizer, max_length):
         texts = [
             build_text(goal, prefix, tactic)
             for goal, prefix, tactic in zip(
-                batch["goal"], batch.get("prefix", [""] * len(batch["goal"])), batch["tactic"]
+                batch["goal"],
+                batch.get("prefix", [""] * len(batch["goal"])),
+                batch["tactic"],
             )
         ]
         encoded = tokenizer(
@@ -151,4 +150,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
