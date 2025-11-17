@@ -199,7 +199,7 @@ The `lean_dojo_v2/lean_dojo/data_extraction` package powers repository tracing:
 Typical usage:
 
 ```python
-from lean_dojo_v2.database.dynamic_database import DynamicDatabase
+from lean_dojo_v2.database import DynamicDatabase
 
 url = "https://github.com/durant42040/lean4-example"
 commit = "005de00d03f1aaa32cb2923d5e3cbaf0b954a192"
@@ -261,21 +261,8 @@ We use `pytest` for regression coverage.
 pip install -e .[dev]          # make sure dev extras like pytest/trl are present
 export GITHUB_ACCESS_TOKEN=<token>
 export HF_TOKEN=<hf-token>     # only required for tests touching HF APIs
-pytest
+pytest -v
 ```
-
-Tests currently cover two areas:
-
-- `lean_dojo_v2/tests/test_dojo.py` spins up the full tracing + Lean agent flow on a tiny public repository. It needs valid GitHub and Hugging Face tokens, plus a working Lean toolchain/Pantograph installation.
-- `lean_dojo_v2/tests/test_leanprogress_examples.py` exercises the LeanProgress dataset helper and regression tokenizer logic. These are pure Python tests with no external dependencies.
-
-If you only want to run the examples test suite (no network calls), target it directly:
-
-```sh
-pytest lean_dojo_v2/tests/test_leanprogress_examples.py
-```
-
-The Lean tracing tests clone repositories and build Lean projects, so make sure `elan` is installed and the `raid/` directory has sufficient space.
 
 ---
 
