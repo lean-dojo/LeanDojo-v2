@@ -168,12 +168,12 @@ def _trace(repo: LeanGitRepo, build_deps: bool) -> None:
             packages_path = Path("lake-packages")
             build_path = Path("build")
 
-        shutil.copytree(
-            Path(lean_prefix), str(packages_path / "lean4"), dirs_exist_ok=True
-        )
 
-        # Modify dependency files to replace 'import all' with 'public import all'
         if build_deps:
+            shutil.copytree(
+                Path(lean_prefix), str(packages_path / "lean4"), dirs_exist_ok=True
+            )
+            # Modify dependency files to replace 'import all' with 'public import all'
             _modify_dependency_files(packages_path)
 
         # Run ExtractData.lean to extract ASTs, tactic states, and premise information.
