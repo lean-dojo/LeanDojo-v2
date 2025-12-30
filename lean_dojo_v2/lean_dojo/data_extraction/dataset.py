@@ -167,8 +167,10 @@ def export_proofs(
     Returns:
         Total number of theorems exported
     """
-    total_theorems = 0
-
+    # Collect all unique theorems across all strategies
+    # (all strategies contain the same theorems, just split differently)
+    unique_theorems = set()
+    
     for strategy, split in splits.items():
         strategy_dir = dst_path / strategy
         strategy_dir.mkdir(parents=True)
@@ -178,6 +180,9 @@ def export_proofs(
             num_tactics = 0
 
             for theorem in theorems:
+                # Track unique theorems by their identity
+                unique_theorems.add(id(theorem))
+                
                 # Filter out tactics with "no goals" or containing "·"
                 tactics = [
                     {
@@ -220,8 +225,8 @@ def export_proofs(
                 f"Saved {len(theorems)} theorems with {num_tactics} tactics "
                 f"to {output_path}"
             )
-            total_theorems += len(theorems)
 
+    total_theorems = len(unique_theorems)
     logger.info(f"Total theorems exported: {total_theorems}")
     return total_theorems
 
