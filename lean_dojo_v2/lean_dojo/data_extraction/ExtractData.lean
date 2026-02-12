@@ -7,12 +7,13 @@ open Lean Elab System
 set_option maxHeartbeats 2000000  -- 10x the default maxHeartbeats.
 
 
-instance : ToJson Substring where
+instance : ToJson Substring.Raw where
   toJson s := toJson s.toString
 
-instance : ToJson String.Pos where
+instance : ToJson String.Pos.Raw where
   toJson n := toJson n.1
 
+deriving instance Lean.ToJson for String.Pos.Raw
 deriving instance ToJson for SourceInfo
 deriving instance ToJson for Syntax.Preresolved
 deriving instance ToJson for Syntax
@@ -28,8 +29,8 @@ The trace of a tactic.
 structure TacticTrace where
   stateBefore: String
   stateAfter: String
-  pos: String.Pos      -- Start position of the tactic.
-  endPos: String.Pos   -- End position of the tactic.
+  pos: String.Pos.Raw      -- Start position of the tactic.
+  endPos: String.Pos.Raw   -- End position of the tactic.
 deriving ToJson
 
 
@@ -130,7 +131,7 @@ def ppGoals (ctx : ContextInfo) (goals : List MVarId) : IO String :=
     return "no goals"
   else
     let fmt := ctx.runMetaM {} (return Std.Format.prefixJoin "\n\n" (← goals.mapM (ppGoal ·)))
-    return (← fmt).pretty.trim
+    return (← fmt).pretty.trimAscii.toString
 
 
 end Pp
@@ -352,7 +353,7 @@ private def visitTermInfo (ti : TermInfo) (env : Environment) : TraceM Unit := d
 
   let mut defPath := toString $ ← Path.findLean modName
   while defPath.startsWith "./" do
-    defPath := defPath.drop 2
+    defPath := defPath.drop 2 |>.toString
   if defPath.startsWith "/lake/" then
     defPath := ".lake/" ++ (defPath.drop 6)
 
@@ -456,7 +457,7 @@ unsafe def processFile (path : FilePath) : IO Unit := do
   for dep in headerToImports header do
     let leanPath ← Path.findLean dep.module
     s := s ++ "\n" ++ leanPath.toString
-  IO.FS.writeFile dep_path s.trim
+  IO.FS.writeFile dep_path s.trimAscii.toString
 
 
 end LeanDojo
