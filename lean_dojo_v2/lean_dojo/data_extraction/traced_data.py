@@ -562,8 +562,8 @@ class TracedFile:
     ) -> None:
         pos2tactics = {}
         for t in tactics_data:
-            start = lean_file.convert_pos(t["pos"])
-            end = lean_file.convert_pos(t["endPos"])
+            start = lean_file.position_to_pos(t["pos"])
+            end = lean_file.position_to_pos(t["endPos"])
             pos2tactics[(start, end)] = t
 
         pos2premises = {}

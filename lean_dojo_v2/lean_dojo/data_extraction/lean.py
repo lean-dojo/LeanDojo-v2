@@ -149,25 +149,16 @@ def url_to_repo(
         tmp_dir = (TMP_DIR or Path("/tmp")) / next(tempfile._get_candidate_names())  # type: ignore
     repo_type = repo_type or get_repo_type(url)
     assert repo_type is not None, f"Invalid url {url}"
-    while True:
-        try:
-            if repo_type == RepoType.GITHUB:
-                return GITHUB.get_repo("/".join(url.split("/")[-2:]))
-            with working_directory(tmp_dir):
-                repo_name = os.path.basename(url)
-                if repo_type == RepoType.LOCAL:
-                    assert is_git_repo(url), f"Local path {url} is not a git repo"
-                    shutil.copytree(url, repo_name)
-                    return Repo(repo_name)
-                else:
-                    return Repo.clone_from(url, repo_name)
-        except Exception as ex:
-            if num_retries <= 0:
-                raise ex
-            num_retries -= 1
-            logger.debug(f'url_to_repo("{url}") failed. Retrying...')
-            time.sleep(backoff)
-            backoff *= 2
+    if repo_type == RepoType.GITHUB:
+        return GITHUB.get_repo("/".join(url.split("/")[-2:]))
+    with working_directory(tmp_dir):
+        repo_name = os.path.basename(url)
+        if repo_type == RepoType.LOCAL:
+            assert is_git_repo(url), f"Local path {url} is not a git repo"
+            shutil.copytree(url, repo_name)
+            return Repo(repo_name)
+        else:
+            return Repo.clone_from(url, repo_name)
 
 
 @cache
@@ -343,6 +334,30 @@ class LeanFile:
 
     def is_empty(self) -> bool:
         return len(self.code) == 0
+
+    def position_to_pos(self, pos_val: Any) -> Pos:
+        """Convert a position value (int or dict) from Lean 4 JSON to a :class:`Pos` object.
+
+        Handles both legacy (integer byte index) and newer (dict with byteIdx) formats.
+        """
+        if isinstance(pos_val, int):
+            return self.convert_pos(pos_val)
+        if isinstance(pos_val, dict):
+            byte_idx = pos_val.get("byteIdx")
+            if byte_idx is not None:
+                return self.convert_pos(byte_idx)
+            raw = pos_val.get("raw")
+            if isinstance(raw, dict) and raw.get("byteIdx") is not None:
+                return self.convert_pos(raw["byteIdx"])
+            if "1" in pos_val and isinstance(pos_val["1"], int):
+                return self.convert_pos(pos_val["1"])
+            line = pos_val.get("line")
+            col = pos_val.get("column") or pos_val.get("character")
+            if line is not None and col is not None:
+                return Pos(line + 1, col + 1)
+        raise ValueError(
+            f"Cannot parse position: expected int or dict with byteIdx/line+column, got {type(pos_val).__name__}"
+        )
 
     def convert_pos(self, byte_idx: int) -> Pos:
         """Convert a byte index (:code:`String.Pos` in Lean 4) to a :class:`Pos` object."""

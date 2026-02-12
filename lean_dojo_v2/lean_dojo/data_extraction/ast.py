@@ -135,8 +135,8 @@ def _parse_pos(
         )  # | synthetic (pos : String.Pos) (endPos : String.Pos) (canonical := false)
         start, end = info["synthetic"]["pos"], info["synthetic"]["endPos"]
 
-    start = lean_file.convert_pos(start)
-    end = lean_file.convert_pos(end)
+    start = lean_file.position_to_pos(start)
+    end = lean_file.position_to_pos(end)
 
     return start, end
 

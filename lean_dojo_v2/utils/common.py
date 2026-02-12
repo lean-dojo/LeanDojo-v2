@@ -146,18 +146,8 @@ def remove_optional_type(tp: type) -> type:
 @cache
 def read_url(url: str, num_retries: int = 2) -> str:
     """Read the contents of the URL ``url``. Retry if failed"""
-    backoff = 1
-    while True:
-        try:
-            with urllib.request.urlopen(url) as f:
-                return f.read().decode()
-        except Exception as ex:
-            if num_retries <= 0:
-                raise ex
-            num_retries -= 1
-            logger.debug(f"Request to {url} failed. Retrying...")
-            time.sleep(backoff)
-            backoff *= 2
+    with urllib.request.urlopen(url) as f:
+        return f.read().decode()
 
 
 @cache
