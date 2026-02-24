@@ -185,8 +185,10 @@ def _trace(repo: LeanGitRepo, build_deps: bool) -> None:
             cmd = f"lake env lean --threads {NUM_PROCS} --run ExtractData.lean"
             if not build_deps:
                 cmd += " noDeps"
+            logger.debug(f"Running {cmd}")
             execute(cmd)
 
+        logger.debug("Verifying traced files")
         check_files(packages_path, not build_deps)
         os.remove(LEAN4_DATA_EXTRACTOR_PATH.name)
 
@@ -197,7 +199,7 @@ def is_available_in_cache(repo: LeanGitRepo) -> bool:
     return cache.get(rel_cache_dir) is not None
 
 
-def get_traced_repo_path(repo: LeanGitRepo, build_deps: bool = True) -> Path:
+def get_traced_repo_path(repo: LeanGitRepo, build_deps: bool = False) -> Path:
     """Return the path of a traced repo in the cache.
 
     The function will trace a repo if it is not available in the cache. See :ref:`caching` for details.
@@ -235,7 +237,7 @@ def get_traced_repo_path(repo: LeanGitRepo, build_deps: bool = True) -> Path:
 def trace(
     repo: LeanGitRepo,
     dst_dir: Optional[Union[str, Path]] = None,
-    build_deps: bool = True,
+    build_deps: bool = False,
 ) -> TracedRepo:
     """Trace a repo (and its dependencies), saving the results to ``dst_dir``.
 

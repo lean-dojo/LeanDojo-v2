@@ -186,9 +186,6 @@ def _to_commit_hash(repo: Union[Repository, Repo], label: str) -> str:
             raise ValueError(f"Invalid tag or branch: `{label}` for {repo.name}")
     else:  # Local or remote Git repository
         assert isinstance(repo, Repo)
-        logger.debug(
-            f"Querying the commit hash for {repo.working_dir} repository {label}"
-        )
         try:
             # Resolve the label to a commit hash
             return repo.commit(label).hexsha

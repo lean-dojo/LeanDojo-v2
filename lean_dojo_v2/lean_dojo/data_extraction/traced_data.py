@@ -1062,7 +1062,7 @@ class TracedRepo:
 
     @classmethod
     def from_traced_files(
-        cls, root_dir: Union[str, Path], build_deps: bool = True
+        cls, root_dir: Union[str, Path], build_deps: bool = False
     ) -> "TracedRepo":
         """Construct a :class:`TracedRepo` object by parsing :file:`*.ast.json` and :file:`*.path` files
            produced by :code:`lean --ast --tsast --tspp` (Lean 3) or :file:`ExtractData.lean` (Lean 4).
@@ -1119,7 +1119,7 @@ class TracedRepo:
 
     @classmethod
     def load_from_disk(
-        cls, root_dir: Union[str, Path], build_deps: bool = True
+        cls, root_dir: Union[str, Path], build_deps: bool = False
     ) -> "TracedRepo":
         """Load a traced repo from :file:`*.trace.xml` files."""
         root_dir = Path(root_dir).resolve()
@@ -1147,6 +1147,7 @@ class TracedRepo:
 
         dependencies = repo.get_dependencies(root_dir)
         if build_deps:
+            logger.debug("Building dependency graph from loaded traced files")
             traced_files_graph = _build_dependency_graph(traced_files, root_dir, repo)
         else:
             traced_files_graph = None

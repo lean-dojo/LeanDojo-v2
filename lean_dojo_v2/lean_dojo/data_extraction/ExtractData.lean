@@ -490,8 +490,7 @@ Trace all *.lean files in the current directory whose corresponding *.olean file
 def processAllFiles (noDeps : Bool) : IO Unit := do
     let cwd ← IO.currentDir
     assert! cwd.fileName != "lean4"
-    println! "Extracting data at {cwd}"
-
+    
     let mut tasks := #[]
     for path in ← System.FilePath.walkDir cwd do
       if ← shouldProcess path noDeps then

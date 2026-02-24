@@ -445,7 +445,7 @@ class DynamicDatabase:
         return sorted_repos
 
     def trace_repository(
-        self, url: str, commit: str, build_deps: bool
+        self, url: str, commit: str, build_deps: bool = False
     ) -> Optional[Repository]:
         """
         Trace a LeanGitRepo and create a Repository object with processed data.
@@ -506,7 +506,7 @@ class DynamicDatabase:
         self,
         num_repos: int,
         curriculum_learning: bool,
-        build_deps: bool = True,
+        build_deps: bool = False,
     ) -> List[LeanGitRepo]:
         """
         Initialize the database and discover repositories.
