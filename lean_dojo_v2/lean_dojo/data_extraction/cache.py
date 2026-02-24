@@ -48,11 +48,10 @@ class Cache:
         cache_path = self.cache_dir / rel_cache_dir
 
         with self.lock:
-            if dirpath.exists():
-                assert cache_path.exists()
+            if cache_path.exists():
                 return cache_path
 
-            elif not DISABLE_REMOTE_CACHE:
+            if not DISABLE_REMOTE_CACHE:
                 url = os.path.join(REMOTE_CACHE_URL, f"{dirname}.tar.gz")
                 if not url_exists(url):
                     return None
@@ -65,12 +64,11 @@ class Cache:
                     with tarfile.open(f"{dirpath}.tar.gz") as tar:
                         tar.extractall(self.cache_dir)
                     os.remove(f"{dirpath}.tar.gz")
-                    assert (cache_path).exists()
+                    assert cache_path.exists()
 
                 return cache_path
 
-            else:
-                return None
+            return None
 
     def store(self, src: Path, rel_cache_dir: Path) -> Path:
         """Store a repo at path ``src``. Return its path in the cache.
