@@ -30,24 +30,6 @@ LEAN4_DATA_EXTRACTOR_PATH = Path(__file__).with_name("ExtractData.lean")
 _PROGRESSBAR_UPDATE_INTERNAL = 5
 
 
-def _modify_dependency_files(packages_path: Path) -> None:
-    """Modify dependency files to replace 'import all' with 'public import all'."""
-    logger.debug(
-        "Modifying dependency files to replace 'import all' with 'public import all'"
-    )
-    for lean_file in packages_path.rglob("*.lean"):
-        with open(lean_file, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        modified_content = re.sub(
-            r"^(\s*)import all", r"\1public import all", content, flags=re.MULTILINE
-        )
-
-        if modified_content != content:
-            with open(lean_file, "w", encoding="utf-8") as f:
-                f.write(modified_content)
-
-
 def _monitor(paths: List[Path], num_total: int) -> None:
     with tqdm(total=num_total) as pbar:
         while True:
@@ -170,10 +152,6 @@ def _trace(repo: LeanGitRepo, build_deps: bool) -> None:
         shutil.copytree(
             Path(lean_prefix), str(packages_path / "lean4"), dirs_exist_ok=True
         )
-
-        # Modify dependency files to replace 'import all' with 'public import all'
-        if build_deps:
-            _modify_dependency_files(packages_path)
 
         # Run ExtractData.lean to extract ASTs, tactic states, and premise information.
         shutil.copyfile(LEAN4_DATA_EXTRACTOR_PATH, LEAN4_DATA_EXTRACTOR_PATH.name)
