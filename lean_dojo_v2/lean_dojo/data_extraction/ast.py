@@ -762,22 +762,15 @@ class LeanBinderidentNode(Node):
         assert node_data["info"] == "none"
         start, end = None, None
         children = _parse_children(node_data, lean_file)
-        assert len(children) == 1 and isinstance(
-            children[0],
-            (
-                TermHoleNode,
-                IdentNode,
-                IdentAntiquotNode,
-            ),
-        )
         return cls(lean_file, start, end, children)
 
     def get_ident(self) -> Optional[str]:
-        if isinstance(self.children[0], TermHoleNode):
-            return None
-        else:
-            assert isinstance(self.children[0], IdentNode)
-            return self.children[0].val
+        for child in self.children:
+            if isinstance(child, TermHoleNode) or isinstance(child, IdentAntiquotNode):
+                return None
+            if isinstance(child, IdentNode):
+                return child.val
+        return None
 
 
 @dataclass(frozen=True)
