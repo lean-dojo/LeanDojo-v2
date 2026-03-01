@@ -8,16 +8,28 @@ from pathlib import Path
 from lean_dojo_v2.utils.constants import LEAN4_BUILD_DIR, LEAN4_PACKAGES_DIR
 
 # Regex pattern for parsing Lean 4 toolchain versions
+# Support leanprover/lean4:v4.x.x, leanprover/lean4-nightly:nightly-YYYY-MM-DD
 _LEAN4_VERSION_REGEX = re.compile(
-    r"leanprover/lean4:(?P<version>v\d+\.\d+\.\d+(?:-rc\d+)?)"
+    r"leanprover/lean4(-nightly)?:(?P<version>.+)"
 )
+_LEAN4_DEFAULT_REGEX = re.compile(r"^\s*lean4\s*$")
 
 
 def get_lean4_version_from_config(toolchain: str) -> str:
     """Return the required Lean version given a ``lean-toolchain`` config."""
-    m = _LEAN4_VERSION_REGEX.fullmatch(toolchain.strip())
-    assert m is not None, "Invalid config."
-    return m["version"]
+    toolchain = toolchain.strip()
+    if _LEAN4_DEFAULT_REGEX.fullmatch(toolchain):
+        return "v4.24.0"
+    m = _LEAN4_VERSION_REGEX.fullmatch(toolchain)
+    if m is None:
+        raise ValueError(
+            f"Invalid lean-toolchain config: {toolchain!r}. "
+            "Expected: leanprover/lean4:v4.x.x, leanprover/lean4-nightly:nightly-*, or lean4"
+        )
+    v = m["version"]
+    if not v.startswith("v") and not v.startswith("nightly-") and v and v[0].isnumeric():
+        v = "v" + v
+    return v
 
 
 def is_supported_version(v: str) -> bool:

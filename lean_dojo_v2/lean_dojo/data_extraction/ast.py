@@ -1391,18 +1391,6 @@ class ModulePreludeNode(Node):
 
 
 @dataclass(frozen=True)
-class ModulePreludeNode(Node):
-    @classmethod
-    def from_data(
-        cls, node_data: Dict[str, Any], lean_file: LeanFile
-    ) -> "ModulePreludeNode":
-        assert node_data["info"] == "none"
-        start, end = None, None
-        children = _parse_children(node_data, lean_file)
-        return cls(lean_file, start, end, children)
-
-
-@dataclass(frozen=True)
 class ModuleImportNode(Node):
     module: Optional[str]
     path: Optional[Path] = None

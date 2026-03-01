@@ -26,6 +26,7 @@ from loguru import logger
 from lean_dojo_v2.utils.common import read_url, url_exists
 from lean_dojo_v2.utils.constants import LEAN4_URL, TMP_DIR
 from lean_dojo_v2.utils.filesystem import is_git_repo, working_directory
+from lean_dojo_v2.utils.lean import get_lean4_version_from_config, is_supported_version
 
 from .cache import cache as repo_cache
 
@@ -437,22 +438,11 @@ class LeanFile:
 
 
 _COMMIT_REGEX = re.compile(r"[0-9a-z]+")
-_LEAN4_VERSION_REGEX = re.compile(r"leanprover/lean4:(?P<version>.+?)")
 
 
 def is_commit_hash(s: str):
     """Check if a string is a valid commit hash."""
     return len(s) == 40 and _COMMIT_REGEX.fullmatch(s)
-
-
-def get_lean4_version_from_config(toolchain: str) -> str:
-    """Return the required Lean version given a ``lean-toolchain`` config."""
-    m = _LEAN4_VERSION_REGEX.fullmatch(toolchain.strip())
-    assert m is not None, "Invalid config."
-    v = m["version"]
-    if not v.startswith("v") and v[0].isnumeric():
-        v = "v" + v
-    return v
 
 
 def get_lean4_commit_from_config(config_dict: Dict[str, Any]) -> str:
@@ -495,28 +485,6 @@ _LAKEFILE_LEAN_GIT_REQUIREMENT_REGEX = re.compile(
 _LAKEFILE_LEAN_LOCAL_REQUIREMENT_REGEX = re.compile(r"require \S+ from \"")
 
 _LAKEFILE_TOML_REQUIREMENT_REGEX = re.compile(r"(?<=\[\[require\]\]).+(?=\n\n)")
-
-
-def is_supported_version(v) -> bool:
-    """Check if ``v`` is at least `v4.3.0-rc2`."""
-    if not v.startswith("v"):
-        return False
-    v = v[1:]
-    major, minor, patch = [int(_) for _ in v.split("-")[0].split(".")]
-    if major < 4 or (major == 4 and minor < 3):
-        return False
-    if (
-        major > 4
-        or (major == 4 and minor > 3)
-        or (major == 4 and minor == 3 and patch > 0)
-    ):
-        return True
-    assert major == 4 and minor == 3 and patch == 0
-    if "4.3.0-rc" in v:
-        rc = int(v.split("-")[1][2:])
-        return rc >= 2
-    else:
-        return True
 
 
 @dataclass(frozen=True)
