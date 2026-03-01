@@ -10,11 +10,12 @@ from .common import (
     load_checkpoint,
     zip_strict,
 )
-from .constants import *
+from .constants import remove_marks
 
 __all__ = [
     "zip_strict",
     "load_checkpoint",
     "cpu_checkpointing_enabled",
     "_is_deepspeed_checkpoint",
+    "remove_marks",
 ]

@@ -135,6 +135,7 @@ def working_directory(
             except OSError as _:
                 pass
 
+
 def compute_md5(path: Path) -> str:
     """Return the MD5 hash of the file ``path``."""
     # The file could be large

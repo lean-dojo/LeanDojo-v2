@@ -1423,7 +1423,11 @@ class CommandModuledocNode(Node):
         start, end = None, None
         children = _parse_children(node_data, lean_file)
         # moduleDoc: "/-!" >> commentBody - structure varies (simple atoms or Verso node)
-        if len(children) >= 1 and isinstance(children[0], AtomNode) and children[0].val == "/-!":
+        if (
+            len(children) >= 1
+            and isinstance(children[0], AtomNode)
+            and children[0].val == "/-!"
+        ):
             comment = "".join(_extract_comment_text(c) for c in children[1:])
         else:
             comment = "".join(_extract_comment_text(c) for c in children)
@@ -1441,7 +1445,11 @@ class CommandDoccommentNode(Node):
         assert node_data["info"] == "none"
         start, end = None, None
         children = _parse_children(node_data, lean_file)
-        if len(children) >= 1 and isinstance(children[0], AtomNode) and children[0].val == "/--":
+        if (
+            len(children) >= 1
+            and isinstance(children[0], AtomNode)
+            and children[0].val == "/--"
+        ):
             comment = "".join(_extract_comment_text(c) for c in children[1:])
         else:
             comment = "".join(_extract_comment_text(c) for c in children)

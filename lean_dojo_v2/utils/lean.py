@@ -9,9 +9,7 @@ from lean_dojo_v2.utils.constants import LEAN4_BUILD_DIR, LEAN4_PACKAGES_DIR
 
 # Regex pattern for parsing Lean 4 toolchain versions
 # Support leanprover/lean4:v4.x.x, leanprover/lean4-nightly:nightly-YYYY-MM-DD
-_LEAN4_VERSION_REGEX = re.compile(
-    r"leanprover/lean4(-nightly)?:(?P<version>.+)"
-)
+_LEAN4_VERSION_REGEX = re.compile(r"leanprover/lean4(-nightly)?:(?P<version>.+)")
 _LEAN4_DEFAULT_REGEX = re.compile(r"^\s*lean4\s*$")
 
 
@@ -27,7 +25,12 @@ def get_lean4_version_from_config(toolchain: str) -> str:
             "Expected: leanprover/lean4:v4.x.x, leanprover/lean4-nightly:nightly-*, or lean4"
         )
     v = m["version"]
-    if not v.startswith("v") and not v.startswith("nightly-") and v and v[0].isnumeric():
+    if (
+        not v.startswith("v")
+        and not v.startswith("nightly-")
+        and v
+        and v[0].isnumeric()
+    ):
         v = "v" + v
     return v
 

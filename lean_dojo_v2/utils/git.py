@@ -46,7 +46,7 @@ def clone_repo(repo_url: str) -> Tuple[str, str]:
         shutil.rmtree(repo_name)
     subprocess.run(["git", "clone", repo_url, repo_name])
     process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
-    stdout, stderr = process.communicate()
+    stdout, _ = process.communicate()
     sha = re.split(r"\t+", stdout.decode("utf-8"))[0]
     return repo_name, sha
 
@@ -307,7 +307,7 @@ def find_and_save_compatible_commits(
 def search_github_repositories(
     language: str = "Lean",
     num_repos: int = 10,
-    known_repositories: List[str] = None,
+    known_repositories: List[str] = [],
 ) -> List[LeanGitRepo]:
     """Search for the given number of repositories on GitHub that have the given language.
 
@@ -353,7 +353,7 @@ def search_github_repositories(
 
             repo_full_name = repo["full_name"]
             logger.info(f"Processing {repo_full_name}")
-            if not repo_full_name not in known_repositories:
+            if repo_full_name in known_repositories:
                 logger.info(f"Skipping {repo_full_name} since it is a known repository")
                 continue
             name = None

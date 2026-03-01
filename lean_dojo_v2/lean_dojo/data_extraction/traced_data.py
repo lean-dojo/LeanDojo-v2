@@ -23,7 +23,29 @@ from lean_dojo_v2.utils.constants import (
 from lean_dojo_v2.utils.filesystem import compute_md5, is_git_repo
 from lean_dojo_v2.utils.lean import to_dep_path, to_json_path, to_lean_path, to_xml_path
 
-from .ast import *
+from .ast import (
+    CommandDeclarationNode,
+    CommandDoccommentNode,
+    CommandEndNode,
+    CommandModuledocNode,
+    CommandNamespaceNode,
+    CommandNoncomputablesectionNode,
+    CommandSectionNode,
+    CommandTheoremNode,
+    FileNode,
+    IdentNode,
+    LemmaNode,
+    MathlibTacticLemmaNode,
+    ModuleImportNode,
+    ModulePreludeNode,
+    Node,
+    OtherNode,
+    TacticTacticseq1IndentedNode,
+    TacticTacticseqbracketedNode,
+    is_leaf,
+    is_mutual_lean4,
+    is_potential_premise_lean4,
+)
 from .lean import LeanFile, LeanGitRepo, Pos, Theorem
 
 

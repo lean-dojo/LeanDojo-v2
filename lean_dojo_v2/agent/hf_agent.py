@@ -5,7 +5,6 @@ from peft import LoraConfig
 from lean_dojo_v2.lean_agent.config import ProverConfig, TrainingConfig
 from lean_dojo_v2.prover import HFProver
 from lean_dojo_v2.trainer import SFTTrainer
-from lean_dojo_v2.utils.constants import *
 
 from .base_agent import BaseAgent
 

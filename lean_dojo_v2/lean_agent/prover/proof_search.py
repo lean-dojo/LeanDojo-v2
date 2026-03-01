@@ -18,7 +18,13 @@ from lean_dojo_v2.lean_agent.generator.model import (
     FixedTacticGenerator,
     RetrievalAugmentedGenerator,
 )
-from lean_dojo_v2.lean_agent.prover.search_tree import *
+from lean_dojo_v2.lean_agent.prover.search_tree import (
+    Edge,
+    ErrorNode,
+    InternalNode,
+    ProofFinishedNode,
+    Status,
+)
 from lean_dojo_v2.lean_dojo import (
     Dojo,
     DojoCrashError,

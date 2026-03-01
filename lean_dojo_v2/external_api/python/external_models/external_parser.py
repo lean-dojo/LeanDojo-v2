@@ -4,6 +4,7 @@ from typing import List, Tuple
 import numpy as np
 import torch
 
+
 def pre_process_input(model_name, input):
     if (
         model_name == "internlm/internlm2-math-plus-1_8b"

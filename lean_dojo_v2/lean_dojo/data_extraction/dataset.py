@@ -170,7 +170,7 @@ def export_proofs(
     # Collect all unique theorems across all strategies
     # (all strategies contain the same theorems, just split differently)
     unique_theorems = set()
-    
+
     for strategy, split in splits.items():
         strategy_dir = dst_path / strategy
         strategy_dir.mkdir(parents=True)
@@ -182,7 +182,7 @@ def export_proofs(
             for theorem in theorems:
                 # Track unique theorems by their identity
                 unique_theorems.add(id(theorem))
-                
+
                 # Filter out tactics with "no goals" or containing "·"
                 tactics = [
                     {
