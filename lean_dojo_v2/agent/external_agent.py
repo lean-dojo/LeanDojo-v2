@@ -25,7 +25,7 @@ def main():
     Main function to run LeanAgent.
     """
     url = "https://github.com/durant42040/lean4-example"
-    commit = "005de00d03f1aaa32cb2923d5e3cbaf0b954a192"
+    commit = "3e23ab0bfdcfdbd5b11ab53c2cd8b5d16492e9c2"
 
     agent = ExternalAgent(model_name="deepseek-ai/DeepSeek-Prover-V2-671B:novita")
     agent.setup_github_repository(url=url, commit=commit)

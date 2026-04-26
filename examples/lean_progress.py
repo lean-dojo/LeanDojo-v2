@@ -12,12 +12,17 @@ from pathlib import Path
 
 from lean_dojo_v2.trainer.progress_trainer import ProgressTrainer
 
-sample_dataset_path = Path("raid/data/sample_leanprogress_dataset.jsonl")
+def main() -> None:
+    sample_dataset_path = Path("raid/data/sample_leanprogress_dataset.jsonl")
 
-trainer = ProgressTrainer(
-    model_name="bert-base-uncased",
-    data_path=str(sample_dataset_path),
-    output_dir="outputs-progress",
-)
+    trainer = ProgressTrainer(
+        model_name="bert-base-uncased",
+        data_path=str(sample_dataset_path),
+        output_dir="outputs-progress",
+    )
 
-trainer.train()
+    trainer.train()
+
+
+if __name__ == "__main__":
+    main()

@@ -132,7 +132,7 @@ from lean_dojo_v2.agent.hf_agent import HFAgent
 from lean_dojo_v2.trainer.sft_trainer import SFTTrainer
 
 url = "https://github.com/durant42040/lean4-example"
-commit = "005de00d03f1aaa32cb2923d5e3cbaf0b954a192"
+commit = "3e23ab0bfdcfdbd5b11ab53c2cd8b5d16492e9c2"
 
 trainer = SFTTrainer(
     model_name="deepseek-ai/DeepSeek-Prover-V2-7B",
@@ -171,7 +171,7 @@ Typical usage:
 from lean_dojo_v2.database import DynamicDatabase
 
 url = "https://github.com/durant42040/lean4-example"
-commit = "005de00d03f1aaa32cb2923d5e3cbaf0b954a192"
+commit = "3e23ab0bfdcfdbd5b11ab53c2cd8b5d16492e9c2"
 
 database = DynamicDatabase()
 

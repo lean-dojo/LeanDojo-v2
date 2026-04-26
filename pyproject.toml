@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lean-dojo-v2"
-version = "1.0.6"
+version = "1.0.8"
 description = "A comprehensive library for AI-assisted theorem proving in Lean"
 readme = "README.md"
 license = {text = "MIT"}

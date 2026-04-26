@@ -7,10 +7,16 @@ Usage: python examples/data_generation/discover_github.py
 
 from lean_dojo_v2.database import DynamicDatabase
 
-database = DynamicDatabase()
 
-database.discover_repositories(
-    num_repos=5,
-    curriculum_learning=True,
-    build_deps=False,
-)
+def main() -> None:
+    database = DynamicDatabase()
+
+    database.discover_repositories(
+        num_repos=5,
+        curriculum_learning=True,
+        build_deps=False,
+    )
+
+
+if __name__ == "__main__":
+    main()
