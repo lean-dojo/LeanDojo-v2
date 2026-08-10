@@ -49,6 +49,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+windows = [
+    "lean-interact>=0.11.0",
+]
 dev = [
     "pytest>=8.4.0",
     "pytest-cov>=6.2.1",
@@ -96,4 +99,6 @@ line_length = 88
 known_first_party = ["lean_dojo_v2", "utils"]
 
 [tool.uv.sources]
+# pantograph is optional — not available on Windows.
+# Use lean-interact instead: pip install "lean-dojo-v2[windows]"
 pantograph = { git = "https://github.com/stanford-centaur/PyPantograph" }
