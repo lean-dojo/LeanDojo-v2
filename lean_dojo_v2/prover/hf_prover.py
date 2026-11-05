@@ -4,7 +4,13 @@ import random
 from typing import Optional
 
 import torch
-from pantograph.expr import GoalState, Tactic
+try:
+    import sys as _sys
+    if _sys.platform == "win32":
+        raise ImportError("Windows: using lean_interact_backend")
+    from pantograph.expr import GoalState, Tactic
+except ImportError:
+    from lean_dojo_v2.interaction.lean_interact_backend import GoalState, Tactic  # type: ignore[assignment]
 from peft import AutoPeftModelForCausalLM
 from transformers import AutoModelForCausalLM, AutoTokenizer
 

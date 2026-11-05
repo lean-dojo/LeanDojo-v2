@@ -6,10 +6,20 @@ from typing import Optional
 
 import networkx as nx
 from loguru import logger
-from pantograph import Server
-from pantograph.expr import GoalState, Site, Tactic
-from pantograph.search import Agent, SearchResult, SearchState
-from pantograph.server import ServerError, TacticFailure
+try:
+    import sys as _sys
+    if _sys.platform == "win32":
+        raise ImportError("Windows: using lean_interact_backend")
+    from pantograph import Server
+    from pantograph.expr import GoalState, Site, Tactic
+    from pantograph.search import Agent, SearchResult, SearchState
+    from pantograph.server import ServerError, TacticFailure
+except ImportError:
+    from lean_dojo_v2.interaction.lean_interact_backend import (  # type: ignore[assignment]
+        Server, GoalState, Site, Tactic,
+        Agent, SearchResult, SearchState,
+        ServerError, TacticFailure,
+    )
 
 from lean_dojo_v2.database.models.theorems import Theorem
 
