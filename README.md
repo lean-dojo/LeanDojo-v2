@@ -279,6 +279,53 @@ Each agent inherits `BaseAgent`, so you can implement your own by overriding `_g
   trainer.train()
   ```
 
+### Releasing LeanProgress on the Hugging Face Hub
+
+`lean_dojo_v2/lean_progress/upload_to_hf.py` validates a LeanProgress JSONL
+dataset, generates the dataset and model cards, and uploads both to the Hub.
+The real LeanProgress checkpoints and the Lean Workbook Plus dataset are not
+in this repo; point the script at them once they are available.
+
+```sh
+export HF_TOKEN=<hf-token>
+
+# Validate and prepare the release without uploading:
+python -m lean_dojo_v2.lean_progress.upload_to_hf \
+  --dataset raid/data/sample_leanprogress_dataset.jsonl --dry-run
+
+# Upload the dataset and a checkpoint:
+python -m lean_dojo_v2.lean_progress.upload_to_hf \
+  --dataset raid/data/sample_leanprogress_dataset.jsonl \
+  --model-dir outputs-progress
+```
+
+Defaults: dataset repo `lean-dojo/lean-workbook-plus`, model repo
+`lean-dojo/leanprogress-steps`. Validation rejects rows with a missing or
+empty goal/tactic, a non-integer or negative `steps_remaining`, or a
+non-string prefix, and reports each bad row with its line number.
+
+### Evaluating provers
+
+`lean_dojo_v2/lean_progress/eval_provers.py` runs a prover over a small
+fixed theorem set (`lean_dojo_v2/lean_progress/theorems.py`) and reports
+claimed passes, Lean-verified passes, and LeanProgress faithfulness
+(predicted vs actual steps remaining). Only Lean-verified passes count in
+the pass rate, and a `sorry` is never counted as a pass.
+
+```sh
+# Offline smoke run, no Lean toolchain needed:
+python -m lean_dojo_v2.lean_progress.eval_provers --prover fake
+
+# Real run (needs a Lean toolchain and a checkpoint):
+python -m lean_dojo_v2.lean_progress.eval_provers --prover hf \
+  --model outputs-deepseek --output eval-report.json
+```
+
+Known limit: goal-only search cannot produce tactics for `HFProver` or
+`RetrievalProver`, because their `next_tactic` returns `None` without a
+traced `Theorem` object. Only `ExternalProver` runs end to end on goal
+strings; Theorem-backed evaluation is not implemented yet.
+
 ## Proving Theorems
 
 LeanDojo-v2 provides three prover implementations, each for different use cases:
